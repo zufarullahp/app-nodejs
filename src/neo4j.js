@@ -1,3 +1,4 @@
+import neo4j from 'neo4j-driver'
 // TODO: Import the neo4j-driver dependency
 
 /**
@@ -21,6 +22,11 @@ let driver
 // tag::initDriver[]
 export function initDriver(uri, username, password) {
   // TODO: Create an instance of the driver here
+  driver = neo4j.driver(uri, neo4j.auth.basic(username, password))
+  // Verify connectivity
+  return driver.verifyConnectivity()
+  // Resolve with an instance of the driver
+  .then(() => driver)
 }
 // end::initDriver[]
 

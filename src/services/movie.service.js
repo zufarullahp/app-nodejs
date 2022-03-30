@@ -2,6 +2,7 @@ import { goodfellas, popular } from '../../test/fixtures/movies.js'
 import { roles } from '../../test/fixtures/people.js'
 import { toNativeTypes } from '../utils.js'
 import NotFoundError from '../errors/not-found.error.js'
+import { int } from 'neo4j-driver'
 
 // TODO: Import the `int` function from neo4j-driver
 
@@ -42,16 +43,16 @@ export default class MovieService {
     
     // TODO: Open an Session
     const session = this.driver.session()
-    
+
     // TODO: Execute a query in a new Read Transaction
     const res = await session.readTransaction(tx => tx.run(`
     MATCH (m:Movie)
     WHERE m.\`${sort}\` IS NOT NULL
-    RETURN m { .* } AS movie
+    RETURN m AS movie
     ORDER BY m.\`${sort}\` ${order}
     SKIP $skip
     LIMIT $limit
-  `, { skip: int(skip), limit: int(limit) }))
+  `, { skip:int(skip), limit: int(limit) }))
     // TODO: Get a list of Movies from the Result
     const movies = res.records.map(row => toNativeTypes(row.get('movie')))
     // TODO: Close the session

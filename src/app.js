@@ -9,6 +9,7 @@ import passport from 'passport'
 import './passport/index.js'
 import { initDriver } from './neo4j.js'
 
+
 // Load config from .env
 config()
 
